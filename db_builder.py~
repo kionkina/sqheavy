@@ -37,16 +37,21 @@ def populate(filename, table_name):
         dicts = []
         for dict in reader:
             dicts.append(dict)
+        keys = dicts[0].keys()
         for dict in dicts:
-            s = "INSERT INTO " + table_name + " VALUES (" 
-            for key in dict.keys():
-                s += "'" + dict[key] + "'" + ","
-            s = s[: len(s) - 1] + ")"
-            c.execute(s)
-            db.commit() #save changes
+            print dict[keys[0]]
+            print dict[keys[1]]
+            print dict[keys[2]]
+            c.execute("INSERT INTO " + table_name + "VALUES ('"+ dict[keys[0]]+ "','"+ dict[keys[1]]+"','"+ dict[keys[2]]+"')" 
+    db.commit() #save changes
     db.close()  #close database
 
 
+# veiw order of columns for peeps.csv
+with open("peeps.csv") as csvfile:
+    reader = csv.DictReader(csvfile)
+    for dict in reader:
+        print dict.keys()
 
 f="discobandit.db"    
 db = sqlite3.connect(f) #open if f exists, otherwise create
@@ -57,10 +62,18 @@ db.commit() #save changes
 db.close()  #close database
 populate("peeps.csv", "Peepz")
 
+
+# veiw order of columns for peeps.csv
+with open("courses.csv") as csvfile:
+    reader = csv.DictReader(csvfile)
+    for dict in reader:
+        print dict.keys()
+
+
 f="discobandit.db"
 db = sqlite3.connect(f) #open if f exists, otherwise create
 c = db.cursor()    #facilitate db ops
-command1 = "CREATE TABLE " + 'coursez'+ " (Code BLOB, ID BLOB, Mark BLOB)"
+command1 = "CREATE TABLE " + 'coursez'+ " (Code TEXT, ID INTEGER, Mark INTEGER)"
 c.execute(command1)
 db.commit() #save changes
 db.close()  #close database
